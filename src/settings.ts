@@ -6,20 +6,8 @@ import FormattingSettingsCard = formattingSettings.SimpleCard;
 import FormattingSettingsSlice = formattingSettings.Slice;
 import FormattingSettingsModel = formattingSettings.Model;
 
-// Visual Settings Card
-class VisualSettingsCard extends FormattingSettingsCard {
-    showConnectors = new formattingSettings.ToggleSwitch({
-        name: "showConnectors",
-        displayName: "Show Connectors",
-        value: true
-    });
-
-    connectorColor = new formattingSettings.ColorPicker({
-        name: "connectorColor",
-        displayName: "Connector Color",
-        value: { value: "#808080" }
-    });
-
+// Layout Settings (was VisualSettingsCard)
+class LayoutSettingsCard extends FormattingSettingsCard {
     orientation = new formattingSettings.ItemDropdown({
         name: "orientation",
         displayName: "Orientation",
@@ -41,12 +29,52 @@ class VisualSettingsCard extends FormattingSettingsCard {
         ]
     });
 
-    name: string = "visualSettings";
-    displayName: string = "Visual Settings";
-    slices: Array<FormattingSettingsSlice> = [this.orientation, this.showConnectors, this.connectorColor, this.barShape];
+    showConnectors = new formattingSettings.ToggleSwitch({
+        name: "showConnectors",
+        displayName: "Show Connectors",
+        value: true
+    });
+
+    connectorColor = new formattingSettings.ColorPicker({
+        name: "connectorColor",
+        displayName: "Connector Color",
+        value: { value: "#808080" }
+    });
+
+    name: string = "layoutSettings";
+    displayName: string = "Layout";
+    slices: Array<FormattingSettingsSlice> = [this.orientation, this.barShape, this.showConnectors, this.connectorColor];
 }
 
-// Column Settings Card
+// Localization Settings (was GeneralSettingsCard)
+class LocalizationSettingsCard extends FormattingSettingsCard {
+    pyAbbrev = new formattingSettings.TextInput({
+        name: "pyAbbrev",
+        displayName: "PY Abbreviation",
+        value: "PY",
+        placeholder: "PY"
+    });
+
+    tyAbbrev = new formattingSettings.TextInput({
+        name: "tyAbbrev",
+        displayName: "TY Abbreviation",
+        value: "TY",
+        placeholder: "TY"
+    });
+
+    budgetAbbrev = new formattingSettings.TextInput({
+        name: "budgetAbbrev",
+        displayName: "Budget Abbreviation",
+        value: "BUD",
+        placeholder: "BUD"
+    });
+
+    name: string = "localizationSettings";
+    displayName: string = "Localization";
+    slices: Array<FormattingSettingsSlice> = [this.pyAbbrev, this.tyAbbrev, this.budgetAbbrev];
+}
+
+// Column Settings Card (Unchanged mostly)
 class ColumnSettingsCard extends FormattingSettingsCard {
     showPY = new formattingSettings.ToggleSwitch({
         name: "showPY",
@@ -90,8 +118,6 @@ class ColumnSettingsCard extends FormattingSettingsCard {
         value: false
     });
 
-
-
     name: string = "columnSettings";
     displayName: string = "Column Settings";
     slices: Array<FormattingSettingsSlice> = [
@@ -101,36 +127,8 @@ class ColumnSettingsCard extends FormattingSettingsCard {
     ];
 }
 
-// General Settings Card (Abbreviations)
-class GeneralSettingsCard extends FormattingSettingsCard {
-    pyAbbrev = new formattingSettings.TextInput({
-        name: "pyAbbrev",
-        displayName: "PY Abbreviation",
-        value: "PY",
-        placeholder: "PY"
-    });
-
-    tyAbbrev = new formattingSettings.TextInput({
-        name: "tyAbbrev",
-        displayName: "TY Abbreviation",
-        value: "TY",
-        placeholder: "TY"
-    });
-
-    budgetAbbrev = new formattingSettings.TextInput({
-        name: "budgetAbbrev",
-        displayName: "Budget Abbreviation",
-        value: "BUD",
-        placeholder: "BUD"
-    });
-
-    name: string = "generalSettings";
-    displayName: string = "General";
-    slices: Array<FormattingSettingsSlice> = [this.pyAbbrev, this.tyAbbrev, this.budgetAbbrev];
-}
-
-// Color Settings Card
-class ColorSettingsCard extends FormattingSettingsCard {
+// Sentiment Colors (Restructured ColorSettingsCard)
+class SentimentColorsCard extends FormattingSettingsCard {
     increaseColor = new formattingSettings.ColorPicker({
         name: "increaseColor",
         displayName: "Increase Color",
@@ -143,180 +141,18 @@ class ColorSettingsCard extends FormattingSettingsCard {
         value: { value: "#CD5C5C" } // muted red
     });
 
-    totalColor = new formattingSettings.ColorPicker({
-        name: "totalColor",
-        displayName: "Total Color",
-        value: { value: "#808080" } // neutral gray
-    });
-
-    startColumnColor = new formattingSettings.ColorPicker({
-        name: "startColumnColor",
-        displayName: "Start Column Color",
-        value: { value: "#333333" } // 20% lighter (approx)
-    });
-
-    endColumnColor = new formattingSettings.ColorPicker({
-        name: "endColumnColor",
-        displayName: "End Column Color",
-        value: { value: "#000000" } // Black
-    });
-
-    name: string = "colorSettings";
-    displayName: string = "Colors";
+    name: string = "sentimentColors";
+    displayName: string = "Sentiment Colors";
     slices: Array<FormattingSettingsSlice> = [
-        this.increaseColor, this.decreaseColor, this.totalColor,
-        this.startColumnColor, this.endColumnColor
+        this.increaseColor, this.decreaseColor
     ];
 }
 
-// Label Settings Card
-class LabelSettingsCard extends FormattingSettingsCard {
-    show = new formattingSettings.ToggleSwitch({
-        name: "show",
-        displayName: "Show Labels",
-        value: true
-    });
-
-    showRunningTotal = new formattingSettings.ToggleSwitch({
-        name: "showRunningTotal",
-        displayName: "Show Running Total",
-        value: false
-    });
-
-    fontSize = new formattingSettings.NumUpDown({
-        name: "fontSize",
-        displayName: "Font Size",
-        value: 11
-    });
-
-    color = new formattingSettings.ColorPicker({
-        name: "color",
-        displayName: "Color",
-        value: { value: "#000000" }
-    });
-
-    fontFamily = new formattingSettings.FontPicker({
-        name: "fontFamily",
-        displayName: "Font Family",
-        value: "Segoe UI, wf_segoe-ui, helvetica, arial, sans-serif"
-    });
-
-    showBackground = new formattingSettings.ToggleSwitch({
-        name: "showBackground",
-        displayName: "Show Background",
-        value: false
-    });
-
-    backgroundColor = new formattingSettings.ColorPicker({
-        name: "backgroundColor",
-        displayName: "Background Color",
-        value: { value: "#FFFFFF" }
-    });
-
-    backgroundTransparency = new formattingSettings.Slider({
-        name: "backgroundTransparency",
-        displayName: "Transparency",
-        value: 0
-    });
-
-    name: string = "labelSettings";
-    displayName: string = "Labels";
-    slices: Array<FormattingSettingsSlice> = [
-        this.show,
-        this.showRunningTotal,
-        this.fontFamily,
-        this.fontSize,
-        this.color,
-        this.showBackground,
-        this.backgroundColor,
-        this.backgroundTransparency
-    ];
-}
-
-class DeltaFormatSettingsCard extends FormattingSettingsCard {
-    deltaDisplayMode = new formattingSettings.ItemDropdown({
-        name: "deltaDisplayMode",
-        displayName: "Display Mode",
-        value: { value: "absolute", displayName: "Absolute" },
-        items: [
-            { value: "absolute", displayName: "Absolute" },
-            { value: "percent", displayName: "Percent" },
-            { value: "both", displayName: "Both" }
-        ]
-    });
-
-    name: string = "deltaFormatSettings";
-    displayName: string = "Delta Format";
-    slices: Array<FormattingSettingsSlice> = [this.deltaDisplayMode];
-}
-
-class NumberFormatSettingsCard extends FormattingSettingsCard {
-    numberScale = new formattingSettings.ItemDropdown({
-        name: "numberScale",
-        displayName: "Display Units",
-        value: { value: "none", displayName: "None" },
-        items: [
-            { value: "none", displayName: "None" },
-            { value: "thousands", displayName: "Thousands" },
-            { value: "millions", displayName: "Millions" }
-        ]
-    });
-
-    thousandsAbbrev = new formattingSettings.TextInput({
-        name: "thousandsAbbrev",
-        displayName: "Thousands Abbreviation",
-        value: "K",
-        placeholder: "K"
-    });
-
-    millionsAbbrev = new formattingSettings.TextInput({
-        name: "millionsAbbrev",
-        displayName: "Millions Abbreviation",
-        value: "M",
-        placeholder: "M"
-    });
-
-    decimalPlaces = new formattingSettings.NumUpDown({
-        name: "decimalPlaces",
-        displayName: "Decimal Places",
-        value: 0
-    });
-
-    percentDecimalPlaces = new formattingSettings.NumUpDown({
-        name: "percentDecimalPlaces",
-        displayName: "Percent Decimal Places",
-        value: 1
-    });
-
-    useThousandsSeparator = new formattingSettings.ToggleSwitch({
-        name: "useThousandsSeparator",
-        displayName: "Thousands Separator",
-        value: true
-    });
-
-    name: string = "numberFormatSettings";
-    displayName: string = "Number Format";
-    slices: Array<FormattingSettingsSlice> = [
-        this.numberScale,
-        this.decimalPlaces,
-        this.percentDecimalPlaces,
-        this.useThousandsSeparator,
-        this.thousandsAbbrev,
-        this.millionsAbbrev
-    ];
-}
-
-// Total Settings Card
+// Total Settings Card (Expanded)
 class TotalSettingsCard extends FormattingSettingsCard {
     showStartTotal = new formattingSettings.ToggleSwitch({
         name: "showStartTotal",
         displayName: "Show Start Total",
-        value: true
-    });
-
-    showEndTotal = new formattingSettings.ToggleSwitch({
-        name: "showEndTotal",
-        displayName: "Show End Total",
         value: true
     });
 
@@ -332,6 +168,18 @@ class TotalSettingsCard extends FormattingSettingsCard {
         ]
     });
 
+    startColumnColor = new formattingSettings.ColorPicker({
+        name: "startColumnColor",
+        displayName: "Start Column Color",
+        value: { value: "#333333" }
+    });
+
+    showEndTotal = new formattingSettings.ToggleSwitch({
+        name: "showEndTotal",
+        displayName: "Show End Total",
+        value: true
+    });
+
     endTotalColumn = new formattingSettings.ItemDropdown({
         name: "endTotalColumn",
         displayName: "End Column Value",
@@ -342,6 +190,19 @@ class TotalSettingsCard extends FormattingSettingsCard {
             { value: "ty", displayName: "This Year (TY)" },
             { value: "budget", displayName: "Budget" }
         ]
+    });
+
+    endColumnColor = new formattingSettings.ColorPicker({
+        name: "endColumnColor",
+        displayName: "End Column Color",
+        value: { value: "#000000" }
+    });
+
+    totalColor = new formattingSettings.ColorPicker({
+        name: "totalColor",
+        displayName: "Default Total Color",
+        description: "Fallback color if not start/end specific",
+        value: { value: "#808080" }
     });
 
     referenceColumn = new formattingSettings.ItemDropdown({
@@ -401,45 +262,135 @@ class TotalSettingsCard extends FormattingSettingsCard {
     name: string = "totalSettings";
     displayName: string = "Totals";
     slices: Array<FormattingSettingsSlice> = [
-        this.showStartTotal,
-        this.showEndTotal,
-        this.startTotalColumn,
-        this.endTotalColumn,
-        this.referenceColumn,
-        this.refMarkShape,
-        this.showRefMarkOnColumns,
+        this.showStartTotal, this.startTotalColumn, this.startColumnColor,
+        this.showEndTotal, this.endTotalColumn, this.endColumnColor,
+        this.totalColor,
+        this.referenceColumn, this.refMarkShape, this.showRefMarkOnColumns,
         this.showVariance,
-        this.showSummaryIndicator,
-        this.summaryPositiveColor,
-        this.summaryNegativeColor
+        this.showSummaryIndicator, this.summaryPositiveColor, this.summaryNegativeColor
     ];
 }
 
-// Ranking Settings Card
-class RankingSettingsCard extends FormattingSettingsCard {
-    enable = new formattingSettings.ToggleSwitch({
-        name: "enable",
-        displayName: "Enable Top N",
+// Data Labels Card (Consolidated)
+class DataLabelSettingsCard extends FormattingSettingsCard {
+    show = new formattingSettings.ToggleSwitch({
+        name: "show",
+        displayName: "Show Labels",
+        value: true
+    });
+
+    color = new formattingSettings.ColorPicker({
+        name: "color",
+        displayName: "Color",
+        value: { value: "#000000" }
+    });
+
+    fontSize = new formattingSettings.NumUpDown({
+        name: "fontSize",
+        displayName: "Font Size",
+        value: 11
+    });
+
+    fontFamily = new formattingSettings.FontPicker({
+        name: "fontFamily",
+        displayName: "Font Family",
+        value: "Segoe UI, wf_segoe-ui, helvetica, arial, sans-serif"
+    });
+
+    // Formatting options from NumFormat
+    numberScale = new formattingSettings.ItemDropdown({
+        name: "numberScale",
+        displayName: "Display Units",
+        value: { value: "none", displayName: "None" },
+        items: [
+            { value: "none", displayName: "None" },
+            { value: "thousands", displayName: "Thousands" },
+            { value: "millions", displayName: "Millions" }
+        ]
+    });
+
+    decimalPlaces = new formattingSettings.NumUpDown({
+        name: "decimalPlaces",
+        displayName: "Decimal Places",
+        value: 0
+    });
+
+    useThousandsSeparator = new formattingSettings.ToggleSwitch({
+        name: "useThousandsSeparator",
+        displayName: "Thousands Separator",
+        value: true
+    });
+
+    thousandsAbbrev = new formattingSettings.TextInput({
+        name: "thousandsAbbrev",
+        displayName: "Thousands Abbreviation",
+        value: "K",
+        placeholder: "K"
+    });
+
+    millionsAbbrev = new formattingSettings.TextInput({
+        name: "millionsAbbrev",
+        displayName: "Millions Abbreviation",
+        value: "M",
+        placeholder: "M"
+    });
+
+    // Delta Options
+    deltaDisplayMode = new formattingSettings.ItemDropdown({
+        name: "deltaDisplayMode",
+        displayName: "Delta Display Mode",
+        value: { value: "absolute", displayName: "Absolute" },
+        items: [
+            { value: "absolute", displayName: "Absolute" },
+            { value: "percent", displayName: "Percent" },
+            { value: "both", displayName: "Both" }
+        ]
+    });
+
+    percentDecimalPlaces = new formattingSettings.NumUpDown({
+        name: "percentDecimalPlaces",
+        displayName: "Percent Decimal Places",
+        value: 1
+    });
+
+    // Running Total
+    showRunningTotal = new formattingSettings.ToggleSwitch({
+        name: "showRunningTotal",
+        displayName: "Show Running Total",
         value: false
     });
 
-    count = new formattingSettings.NumUpDown({
-        name: "count",
-        displayName: "Top N Count",
-        value: 5
+    // Background
+    showBackground = new formattingSettings.ToggleSwitch({
+        name: "showBackground",
+        displayName: "Show Background",
+        value: false
     });
 
-    othersLabel = new formattingSettings.TextInput({
-        name: "othersLabel",
-        displayName: "Others Label",
-        value: "Others",
-        placeholder: "Others"
+    backgroundColor = new formattingSettings.ColorPicker({
+        name: "backgroundColor",
+        displayName: "Background Color",
+        value: { value: "#FFFFFF" }
     });
 
-    name: string = "rankingSettings";
-    displayName: string = "Top N";
-    slices: Array<FormattingSettingsSlice> = [this.enable, this.count, this.othersLabel];
+    backgroundTransparency = new formattingSettings.Slider({
+        name: "backgroundTransparency",
+        displayName: "Transparency",
+        value: 0
+    });
+
+    name: string = "dataLabelSettings";
+    displayName: string = "Data Labels";
+    slices: Array<FormattingSettingsSlice> = [
+        this.show, this.color, this.fontSize, this.fontFamily,
+        this.deltaDisplayMode,
+        this.numberScale, this.decimalPlaces, this.percentDecimalPlaces, this.useThousandsSeparator,
+        this.thousandsAbbrev, this.millionsAbbrev,
+        this.showRunningTotal,
+        this.showBackground, this.backgroundColor, this.backgroundTransparency
+    ];
 }
+
 
 // Y-Axis Settings Card
 class YAxisSettingsCard extends FormattingSettingsCard {
@@ -537,6 +488,32 @@ class SortingSettingsCard extends FormattingSettingsCard {
     slices: Array<FormattingSettingsSlice> = [this.sortBy, this.sortDirection];
 }
 
+// Ranking Settings Card
+class RankingSettingsCard extends FormattingSettingsCard {
+    enable = new formattingSettings.ToggleSwitch({
+        name: "enable",
+        displayName: "Enable Top N",
+        value: false
+    });
+
+    count = new formattingSettings.NumUpDown({
+        name: "count",
+        displayName: "Top N Count",
+        value: 5
+    });
+
+    othersLabel = new formattingSettings.TextInput({
+        name: "othersLabel",
+        displayName: "Others Label",
+        value: "Others",
+        placeholder: "Others"
+    });
+
+    name: string = "rankingSettings";
+    displayName: string = "Top N";
+    slices: Array<FormattingSettingsSlice> = [this.enable, this.count, this.othersLabel];
+}
+
 // Small Multiples Settings Card
 class SmallMultiplesSettingsCard extends FormattingSettingsCard {
     layoutMode = new formattingSettings.ItemDropdown({
@@ -597,14 +574,12 @@ class SmallMultiplesSettingsCard extends FormattingSettingsCard {
 * Visual Formatting Settings Model Class
 */
 export class VisualFormattingSettingsModel extends FormattingSettingsModel {
-    generalSettings = new GeneralSettingsCard();
-    visualSettings = new VisualSettingsCard();
+    layoutSettings = new LayoutSettingsCard();
+    localizationSettings = new LocalizationSettingsCard();
     columnSettings = new ColumnSettingsCard();
-    colorSettings = new ColorSettingsCard();
-    labelSettings = new LabelSettingsCard();
-    deltaFormatSettings = new DeltaFormatSettingsCard();
-    numberFormatSettings = new NumberFormatSettingsCard();
+    sentimentColors = new SentimentColorsCard();
     totalSettings = new TotalSettingsCard();
+    dataLabelSettings = new DataLabelSettingsCard();
     yAxisSettings = new YAxisSettingsCard();
     xAxisSettings = new XAxisSettingsCard();
     sortingSettings = new SortingSettingsCard();
@@ -612,14 +587,12 @@ export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     smallMultiplesSettings = new SmallMultiplesSettingsCard();
 
     cards = [
-        this.generalSettings,
-        this.visualSettings,
+        this.layoutSettings,
+        this.localizationSettings,
         this.columnSettings,
-        this.colorSettings,
-        this.labelSettings,
-        this.deltaFormatSettings,
-        this.numberFormatSettings,
+        this.sentimentColors,
         this.totalSettings,
+        this.dataLabelSettings,
         this.yAxisSettings,
         this.xAxisSettings,
         this.sortingSettings,

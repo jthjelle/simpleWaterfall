@@ -423,8 +423,8 @@ export class Visual implements IVisual {
 
         if (!viewModel || viewModel.dataPoints.length === 0) return;
 
-        const showConnectors = this.settings.visualSettings.showConnectors.value;
-        const connectorColor = this.settings.visualSettings.connectorColor.value.value;
+        const showConnectors = this.settings.layoutSettings.showConnectors.value;
+        const connectorColor = this.settings.layoutSettings.connectorColor.value.value;
         const showPYLabel = this.settings.columnSettings.showPYLabel.value;
         const showTYLabel = this.settings.columnSettings.showTYLabel.value;
 
@@ -432,9 +432,9 @@ export class Visual implements IVisual {
         const showYAxisLabels = this.settings.yAxisSettings.showLabels.value;
         const labelOrientation = String(this.settings.xAxisSettings.labelOrientation.value.value);
 
-        const orientation = this.settings.visualSettings.orientation.value.value; // "vertical" or "horizontal"
+        const orientation = this.settings.layoutSettings.orientation.value.value; // "vertical" or "horizontal"
         const isHorizontal = orientation === "horizontal";
-        const barShape = this.settings.visualSettings.barShape.value.value;
+        const barShape = this.settings.layoutSettings.barShape.value.value;
 
         let leftMargin = showYAxisLabels ? Math.max(40, Math.min(60, width * 0.15)) : 10;
         let bottomMargin = 20;
@@ -655,12 +655,12 @@ export class Visual implements IVisual {
                 .range(invert ? [0, innerHeight] : [innerHeight, 0]);
         }
 
-        const numberScale = String(this.settings.numberFormatSettings.numberScale.value.value);
-        const thousandsAbbrev = this.settings.numberFormatSettings.thousandsAbbrev.value;
-        const millionsAbbrev = this.settings.numberFormatSettings.millionsAbbrev.value;
-        const decimalPlaces = this.settings.numberFormatSettings.decimalPlaces.value;
-        const percentDecimalPlaces = this.settings.numberFormatSettings.percentDecimalPlaces.value;
-        const useThousandsSeparator = this.settings.numberFormatSettings.useThousandsSeparator.value;
+        const numberScale = String(this.settings.dataLabelSettings.numberScale.value.value);
+        const thousandsAbbrev = this.settings.dataLabelSettings.thousandsAbbrev.value;
+        const millionsAbbrev = this.settings.dataLabelSettings.millionsAbbrev.value;
+        const decimalPlaces = this.settings.dataLabelSettings.decimalPlaces.value;
+        const percentDecimalPlaces = this.settings.dataLabelSettings.percentDecimalPlaces.value;
+        const useThousandsSeparator = this.settings.dataLabelSettings.useThousandsSeparator.value;
 
         const labelMaxChars = this.settings.xAxisSettings.labelMaxChars.value;
         const xAxis = d3.axisBottom(xScale);
@@ -732,7 +732,7 @@ export class Visual implements IVisual {
                 .attr("stroke", "#999").attr("stroke-width", 1.5).attr("fill", "none");
         }
 
-        const showLabels = this.settings.labelSettings.show.value;
+        const showLabels = this.settings.dataLabelSettings.show.value;
 
         // Column Settings
         const showPY = this.settings.columnSettings.showPY.value;
@@ -1119,17 +1119,17 @@ export class Visual implements IVisual {
             bars.style("opacity", d => d.highlight ? 1 : 0.4);
         }
 
-        const showRunningTotal = this.settings.labelSettings.showRunningTotal.value;
-        const fontSize = this.settings.labelSettings.fontSize.value;
-        const labelColor = this.settings.labelSettings.color.value.value;
+        const showRunningTotal = this.settings.dataLabelSettings.showRunningTotal.value;
+        const fontSize = this.settings.dataLabelSettings.fontSize.value;
+        const labelColor = this.settings.dataLabelSettings.color.value.value;
 
 
         if (showLabels) {
-            const deltaDisplayMode = String(this.settings.deltaFormatSettings.deltaDisplayMode.value.value);
-            const fontFamily = this.settings.labelSettings.fontFamily.value;
-            const showBackground = this.settings.labelSettings.showBackground.value;
-            const backgroundColor = this.settings.labelSettings.backgroundColor.value.value;
-            const transparency = this.settings.labelSettings.backgroundTransparency.value;
+            const deltaDisplayMode = String(this.settings.dataLabelSettings.deltaDisplayMode.value.value);
+            const fontFamily = this.settings.dataLabelSettings.fontFamily.value;
+            const showBackground = this.settings.dataLabelSettings.showBackground.value;
+            const backgroundColor = this.settings.dataLabelSettings.backgroundColor.value.value;
+            const transparency = this.settings.dataLabelSettings.backgroundTransparency.value;
             const opacity = (100 - transparency) / 100;
 
             // Remove old text-only labels logic to avoid duplicates if switching modes
@@ -1353,7 +1353,7 @@ export class Visual implements IVisual {
                 ];
                 // If it's PY Col, show PY. If TY, show TY.
                 // d has py/ty props.
-                const decimalPlaces = this.settings.numberFormatSettings.decimalPlaces.value;
+                const decimalPlaces = this.settings.dataLabelSettings.decimalPlaces.value;
                 // We need access to formatNumber... it's a private method on class 'this'.
                 // We are inside renderChart => this is Visual instance.
 
@@ -1680,9 +1680,9 @@ export class Visual implements IVisual {
     }
 
     private generateChartData(indices: number[], categoryColumn: powerbi.DataViewCategoryColumn, groupColumn: powerbi.DataViewCategoryColumn | null, pyValues: any[], tyValues: any[], budgetValues: any[], tooltipCols: { source: any, values: any[] }[], title: string): WaterfallChartData {
-        const increaseColor = this.settings.colorSettings.increaseColor.value.value;
-        const decreaseColor = this.settings.colorSettings.decreaseColor.value.value;
-        const totalColor = this.settings.colorSettings.totalColor.value.value;
+        const increaseColor = this.settings.sentimentColors.increaseColor.value.value;
+        const decreaseColor = this.settings.sentimentColors.decreaseColor.value.value;
+        const totalColor = this.settings.totalSettings.totalColor.value.value;
         const showStartTotal = this.settings.totalSettings.showStartTotal.value;
         const showEndTotal = this.settings.totalSettings.showEndTotal.value;
         // Default to Standard Variance (PY -> TY) if not specified or set to "none"/"zero"
@@ -1697,9 +1697,9 @@ export class Visual implements IVisual {
         const sortDesc = this.settings.sortingSettings.sortDirection.value.value === "desc";
 
         // Abbrev Replacements
-        const pyAbbrev = this.settings.generalSettings.pyAbbrev.value || "PY";
-        const tyAbbrev = this.settings.generalSettings.tyAbbrev.value || "TY";
-        const budgetAbbrev = this.settings.generalSettings.budgetAbbrev.value || "BUD";
+        const pyAbbrev = this.settings.localizationSettings.pyAbbrev.value || "PY";
+        const tyAbbrev = this.settings.localizationSettings.tyAbbrev.value || "TY";
+        const budgetAbbrev = this.settings.localizationSettings.budgetAbbrev.value || "BUD";
 
         const replaceAbbrev = (name: string, type: string) => {
             // If name is user-provided constant "Start" or "End", we might want to override it IF the user hasn't customized it?
@@ -1835,8 +1835,8 @@ export class Visual implements IVisual {
         const pyColor = this.settings.columnSettings.pyColumnColor.value.value;
         const tyColor = this.settings.columnSettings.tyColumnColor.value.value;
 
-        const startColumnColor = this.settings.colorSettings.startColumnColor.value.value;
-        const endColumnColor = this.settings.colorSettings.endColumnColor.value.value;
+        const startColumnColor = this.settings.totalSettings.startColumnColor.value.value;
+        const endColumnColor = this.settings.totalSettings.endColumnColor.value.value;
 
         // Add Start Column (Total PY) - Always show in Bridge Mode
         dataPoints.push({
