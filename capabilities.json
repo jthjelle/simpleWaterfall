@@ -26,36 +26,15 @@
             "kind": "Measure"
         },
         {
-            "displayName": "Estimate",
-            "name": "estimate",
-            "kind": "Measure"
-        },
-        {
             "displayName": "Tooltips",
             "name": "tooltips",
             "kind": "Measure"
         }
     ],
     "objects": {
-        "visualSettings": {
-            "displayName": "Visual Settings",
+        "layoutSettings": {
+            "displayName": "Layout",
             "properties": {
-                "showConnectors": {
-                    "displayName": "Show Connectors",
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "connectorColor": {
-                    "displayName": "Connector Color",
-                    "type": {
-                        "fill": {
-                            "solid": {
-                                "color": true
-                            }
-                        }
-                    }
-                },
                 "orientation": {
                     "displayName": "Orientation",
                     "type": {
@@ -88,6 +67,45 @@
                                 "value": "arrow"
                             }
                         ]
+                    }
+                },
+                "showConnectors": {
+                    "displayName": "Show Connectors",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "connectorColor": {
+                    "displayName": "Connector Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "localizationSettings": {
+            "displayName": "Localization",
+            "properties": {
+                "pyAbbrev": {
+                    "displayName": "PY Abbreviation",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "tyAbbrev": {
+                    "displayName": "TY Abbreviation",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "budgetAbbrev": {
+                    "displayName": "Budget Abbreviation",
+                    "type": {
+                        "text": true
                     }
                 }
             }
@@ -127,12 +145,6 @@
                         }
                     }
                 },
-                "showSecondaryAxis": {
-                    "displayName": "Show Secondary Y Axis",
-                    "type": {
-                        "bool": true
-                    }
-                },
                 "showPYLabel": {
                     "displayName": "Show PY Label",
                     "type": {
@@ -150,57 +162,17 @@
                     "type": {
                         "bool": true
                     }
-                }
-            }
-        },
-        "generalSettings": {
-            "displayName": "General",
-            "properties": {
-                "pyAbbrev": {
-                    "displayName": "PY Abbreviation",
-                    "type": {
-                        "text": true
-                    }
                 },
-                "tyAbbrev": {
-                    "displayName": "TY Abbreviation",
-                    "type": {
-                        "text": true
-                    }
-                },
-                "budgetAbbrev": {
-                    "displayName": "Budget Abbreviation",
-                    "type": {
-                        "text": true
-                    }
-                }
-            }
-        },
-        "rankingSettings": {
-            "displayName": "Top N",
-            "properties": {
-                "enable": {
-                    "displayName": "Enable Top N",
+                "showRefMarkOnColumns": {
+                    "displayName": "Show reference marks on columns",
                     "type": {
                         "bool": true
                     }
-                },
-                "count": {
-                    "displayName": "Top N Count",
-                    "type": {
-                        "integer": true
-                    }
-                },
-                "othersLabel": {
-                    "displayName": "Others Label",
-                    "type": {
-                        "text": true
-                    }
                 }
             }
         },
-        "colorSettings": {
-            "displayName": "Colors",
+        "sentimentColors": {
+            "displayName": "Sentiment Colors",
             "properties": {
                 "increaseColor": {
                     "displayName": "Increase Color",
@@ -221,159 +193,6 @@
                             }
                         }
                     }
-                },
-                "totalColor": {
-                    "displayName": "Total Color",
-                    "type": {
-                        "fill": {
-                            "solid": {
-                                "color": true
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "labelSettings": {
-            "displayName": "Labels",
-            "properties": {
-                "show": {
-                    "displayName": "Show Labels",
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "showRunningTotal": {
-                    "displayName": "Show Running Total",
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "fontSize": {
-                    "displayName": "Font Size",
-                    "type": {
-                        "formatting": {
-                            "fontSize": true
-                        }
-                    }
-                },
-                "color": {
-                    "displayName": "Color",
-                    "type": {
-                        "fill": {
-                            "solid": {
-                                "color": true
-                            }
-                        }
-                    }
-                },
-                "fontFamily": {
-                    "displayName": "Font Family",
-                    "type": {
-                        "formatting": {
-                            "fontFamily": true
-                        }
-                    }
-                },
-                "showBackground": {
-                    "displayName": "Show Background",
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "backgroundColor": {
-                    "displayName": "Background Color",
-                    "type": {
-                        "fill": {
-                            "solid": {
-                                "color": true
-                            }
-                        }
-                    }
-                },
-                "backgroundTransparency": {
-                    "displayName": "Transparency",
-                    "type": {
-                        "numeric": true
-                    }
-                }
-            }
-        },
-        "deltaFormatSettings": {
-            "displayName": "Delta Format",
-            "properties": {
-                "deltaDisplayMode": {
-                    "displayName": "Display Mode",
-                    "type": {
-                        "enumeration": [
-                            {
-                                "displayName": "Absolute",
-                                "value": "absolute"
-                            },
-                            {
-                                "displayName": "Percent",
-                                "value": "percent"
-                            },
-                            {
-                                "displayName": "Both",
-                                "value": "both"
-                            }
-                        ]
-                    }
-                }
-            }
-        },
-        "numberFormatSettings": {
-            "displayName": "Number Format",
-            "properties": {
-                "numberScale": {
-                    "displayName": "Display Units",
-                    "type": {
-                        "enumeration": [
-                            {
-                                "displayName": "None",
-                                "value": "none"
-                            },
-                            {
-                                "displayName": "Thousands",
-                                "value": "thousands"
-                            },
-                            {
-                                "displayName": "Millions",
-                                "value": "millions"
-                            }
-                        ]
-                    }
-                },
-                "thousandsAbbrev": {
-                    "displayName": "Thousands Abbreviation",
-                    "type": {
-                        "text": true
-                    }
-                },
-                "millionsAbbrev": {
-                    "displayName": "Millions Abbreviation",
-                    "type": {
-                        "text": true
-                    }
-                },
-                "decimalPlaces": {
-                    "displayName": "Decimal Places",
-                    "type": {
-                        "numeric": true
-                    }
-                },
-                "percentDecimalPlaces": {
-                    "displayName": "Percent Decimal Places",
-                    "type": {
-                        "numeric": true
-                    }
-                },
-                "useThousandsSeparator": {
-                    "displayName": "Thousands Separator",
-                    "type": {
-                        "bool": true
-                    }
                 }
             }
         },
@@ -386,26 +205,59 @@
                         "bool": true
                     }
                 },
+                "startTotalColumn": {
+                    "displayName": "Start Column Value",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "0 (Zero)",
+                                "value": "zero"
+                            },
+                            {
+                                "displayName": "Previous Year (PY)",
+                                "value": "py"
+                            },
+                            {
+                                "displayName": "This Year (TY)",
+                                "value": "ty"
+                            },
+                            {
+                                "displayName": "Budget",
+                                "value": "budget"
+                            }
+                        ]
+                    }
+                },
+                "startColumnColor": {
+                    "displayName": "Start Column Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
                 "showEndTotal": {
                     "displayName": "Show End Total",
                     "type": {
                         "bool": true
                     }
                 },
-                "startTotalColumn": {
-                    "displayName": "Start Column",
+                "endTotalColumn": {
+                    "displayName": "End Column Value",
                     "type": {
                         "enumeration": [
                             {
-                                "displayName": "0",
-                                "value": "zero"
+                                "displayName": "Calculated (Sum of Deltas)",
+                                "value": "calculated"
                             },
                             {
-                                "displayName": "PY",
+                                "displayName": "Previous Year (PY)",
                                 "value": "py"
                             },
                             {
-                                "displayName": "TY",
+                                "displayName": "This Year (TY)",
                                 "value": "ty"
                             },
                             {
@@ -415,23 +267,24 @@
                         ]
                     }
                 },
-                "endTotalColumn": {
-                    "displayName": "End Column",
+                "endColumnColor": {
+                    "displayName": "End Column Color",
                     "type": {
-                        "enumeration": [
-                            {
-                                "displayName": "PY",
-                                "value": "py"
-                            },
-                            {
-                                "displayName": "TY",
-                                "value": "ty"
-                            },
-                            {
-                                "displayName": "Budget",
-                                "value": "budget"
+                        "fill": {
+                            "solid": {
+                                "color": true
                             }
-                        ]
+                        }
+                    }
+                },
+                "totalColor": {
+                    "displayName": "Default Total Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
                     }
                 },
                 "referenceColumn": {
@@ -443,11 +296,11 @@
                                 "value": "none"
                             },
                             {
-                                "displayName": "PY",
+                                "displayName": "Previous Year (PY)",
                                 "value": "py"
                             },
                             {
-                                "displayName": "TY",
+                                "displayName": "This Year (TY)",
                                 "value": "ty"
                             },
                             {
@@ -458,7 +311,7 @@
                     }
                 },
                 "refMarkShape": {
-                    "displayName": "Reference Mark Shape",
+                    "displayName": "Ref Mark Shape",
                     "type": {
                         "enumeration": [
                             {
@@ -480,28 +333,10 @@
                         ]
                     }
                 },
-                "showRefMarkOnColumns": {
-                    "displayName": "Show Mark on Columns",
-                    "type": {
-                        "bool": true
-                    }
-                },
                 "showVariance": {
                     "displayName": "Show Variance",
                     "type": {
                         "bool": true
-                    }
-                },
-                "startName": {
-                    "displayName": "Start Label",
-                    "type": {
-                        "text": true
-                    }
-                },
-                "endName": {
-                    "displayName": "End Label",
-                    "type": {
-                        "text": true
                     }
                 },
                 "showSummaryIndicator": {
@@ -528,6 +363,158 @@
                                 "color": true
                             }
                         }
+                    }
+                }
+            }
+        },
+        "dataLabelSettings": {
+            "displayName": "Data Labels",
+            "properties": {
+                "show": {
+                    "displayName": "Show Labels",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "color": {
+                    "displayName": "Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "fontSize": {
+                    "displayName": "Font Size",
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                },
+                "fontFamily": {
+                    "displayName": "Font Family",
+                    "type": {
+                        "formatting": {
+                            "fontFamily": true
+                        }
+                    }
+                },
+                "numberScale": {
+                    "displayName": "Display Units",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "None",
+                                "value": "none"
+                            },
+                            {
+                                "displayName": "Thousands",
+                                "value": "thousands"
+                            },
+                            {
+                                "displayName": "Millions",
+                                "value": "millions"
+                            }
+                        ]
+                    }
+                },
+                "decimalPlaces": {
+                    "displayName": "Decimal Places",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "useThousandsSeparator": {
+                    "displayName": "Thousands Separator",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "thousandsAbbrev": {
+                    "displayName": "Thousands Abbreviation",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "millionsAbbrev": {
+                    "displayName": "Millions Abbreviation",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "deltaDisplayMode": {
+                    "displayName": "Delta Display Mode",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Absolute",
+                                "value": "absolute"
+                            },
+                            {
+                                "displayName": "Percent",
+                                "value": "percent"
+                            },
+                            {
+                                "displayName": "Both",
+                                "value": "both"
+                            }
+                        ]
+                    }
+                },
+                "percentDecimalPlaces": {
+                    "displayName": "Percent Decimal Places",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "showRunningTotal": {
+                    "displayName": "Show Running Total",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "showBackground": {
+                    "displayName": "Show Background",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "badgeShape": {
+                    "displayName": "Badge Shape",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Rounded",
+                                "value": "rounded"
+                            },
+                            {
+                                "displayName": "Rectangle",
+                                "value": "rectangle"
+                            },
+                            {
+                                "displayName": "Pill",
+                                "value": "pill"
+                            }
+                        ]
+                    }
+                },
+                "backgroundColor": {
+                    "displayName": "Background Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "backgroundTransparency": {
+                    "displayName": "Transparency",
+                    "type": {
+                        "numeric": true
                     }
                 }
             }
@@ -646,6 +633,29 @@
                 }
             }
         },
+        "rankingSettings": {
+            "displayName": "Top N",
+            "properties": {
+                "enable": {
+                    "displayName": "Enable Top N",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "count": {
+                    "displayName": "Top N Count",
+                    "type": {
+                        "integer": true
+                    }
+                },
+                "othersLabel": {
+                    "displayName": "Others Label",
+                    "type": {
+                        "text": true
+                    }
+                }
+            }
+        },
         "smallMultiplesSettings": {
             "displayName": "Small Multiples",
             "properties": {
@@ -681,33 +691,39 @@
                     "type": {
                         "numeric": true
                     }
-                }
-            }
-        },
-        "secondaryYAxis": {
-            "displayName": "Secondary Y-Axis",
-            "properties": {
-                "min": {
-                    "displayName": "Minimum",
+                },
+                "sortBy": {
+                    "displayName": "Sort By",
                     "type": {
-                        "numeric": true
+                        "enumeration": [
+                            {
+                                "displayName": "Name",
+                                "value": "name"
+                            },
+                            {
+                                "displayName": "Start Value",
+                                "value": "start"
+                            },
+                            {
+                                "displayName": "End Value",
+                                "value": "end"
+                            }
+                        ]
                     }
                 },
-                "max": {
-                    "displayName": "Maximum",
+                "sortDirection": {
+                    "displayName": "Direction",
                     "type": {
-                        "numeric": true
-                    }
-                }
-            }
-        },
-        "tooltips": {
-            "displayName": "Tooltips",
-            "properties": {
-                "show": {
-                    "displayName": "Show Tooltips",
-                    "type": {
-                        "bool": true
+                        "enumeration": [
+                            {
+                                "displayName": "Ascending",
+                                "value": "asc"
+                            },
+                            {
+                                "displayName": "Descending",
+                                "value": "desc"
+                            }
+                        ]
                     }
                 }
             }
