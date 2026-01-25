@@ -1474,7 +1474,7 @@ export class Visual implements IVisual {
             }
         }
 
-        const refStrokeColor = "#333";
+        const refStrokeColor = this.settings.totalSettings.refMarkColor.value.value;
         const refMarkShape = this.settings.totalSettings.refMarkShape.value.value;
         const showRefMarkOnColumns = this.settings.columnSettings.showRefMarkOnColumns.value;
 
@@ -1696,7 +1696,7 @@ export class Visual implements IVisual {
     private generateChartData(indices: number[], categoryColumn: powerbi.DataViewCategoryColumn, groupColumn: powerbi.DataViewCategoryColumn | null, pyValues: any[], tyValues: any[], budgetValues: any[], tooltipCols: { source: any, values: any[] }[], title: string): WaterfallChartData {
         const increaseColor = this.settings.sentimentColors.increaseColor.value.value;
         const decreaseColor = this.settings.sentimentColors.decreaseColor.value.value;
-        const totalColor = this.settings.totalSettings.totalColor.value.value;
+        const totalColor = "#808080"; // Default total color (setting removed)
         const showStartTotal = this.settings.totalSettings.showStartTotal.value;
         const showEndTotal = this.settings.totalSettings.showEndTotal.value;
         // Default to Standard Variance (PY -> TY) if not specified or set to "none"/"zero"

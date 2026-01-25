@@ -277,16 +277,6 @@
                         }
                     }
                 },
-                "totalColor": {
-                    "displayName": "Default Total Color",
-                    "type": {
-                        "fill": {
-                            "solid": {
-                                "color": true
-                            }
-                        }
-                    }
-                },
                 "referenceColumn": {
                     "displayName": "Reference Column",
                     "type": {
@@ -331,6 +321,16 @@
                                 "value": "cross"
                             }
                         ]
+                    }
+                },
+                "refMarkColor": {
+                    "displayName": "Ref Mark Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
                     }
                 },
                 "showVariance": {

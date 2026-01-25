@@ -208,12 +208,7 @@ class TotalSettingsCard extends FormattingSettingsCard {
         value: { value: "#000000" }
     });
 
-    totalColor = new formattingSettings.ColorPicker({
-        name: "totalColor",
-        displayName: "Default Total Color",
-        description: "Fallback color if not start/end specific",
-        value: { value: "#808080" }
-    });
+
 
     referenceColumn = new formattingSettings.ItemDropdown({
         name: "referenceColumn",
@@ -237,6 +232,12 @@ class TotalSettingsCard extends FormattingSettingsCard {
             { value: "circle", displayName: "Circle" },
             { value: "cross", displayName: "Cross" }
         ]
+    });
+
+    refMarkColor = new formattingSettings.ColorPicker({
+        name: "refMarkColor",
+        displayName: "Ref Mark Color",
+        value: { value: "#000000" }
     });
 
 
@@ -268,12 +269,19 @@ class TotalSettingsCard extends FormattingSettingsCard {
     name: string = "totalSettings";
     displayName: string = "Totals";
     slices: Array<FormattingSettingsSlice> = [
-        this.showStartTotal, this.startTotalColumn, this.startColumnColor,
-        this.showEndTotal, this.endTotalColumn, this.endColumnColor,
-        this.totalColor,
-        this.referenceColumn, this.refMarkShape,
+        this.showStartTotal,
+        this.startTotalColumn,
+        this.startColumnColor,
+        this.showEndTotal,
+        this.endTotalColumn,
+        this.endColumnColor,
+        this.referenceColumn, // Intentionally kept for now
+        this.refMarkShape,
+        this.refMarkColor,
         this.showVariance,
-        this.showSummaryIndicator, this.summaryPositiveColor, this.summaryNegativeColor
+        this.showSummaryIndicator,
+        this.summaryPositiveColor,
+        this.summaryNegativeColor
     ];
 }
 
