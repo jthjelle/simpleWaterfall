@@ -74,6 +74,9 @@ class LocalizationSettingsCard extends FormattingSettingsCard {
     slices: Array<FormattingSettingsSlice> = [this.pyAbbrev, this.tyAbbrev, this.budgetAbbrev];
 }
 
+
+
+
 // Column Settings Card (Unchanged mostly)
 class ColumnSettingsCard extends FormattingSettingsCard {
     showPY = new formattingSettings.ToggleSwitch({
@@ -584,11 +587,14 @@ class SmallMultiplesSettingsCard extends FormattingSettingsCard {
     slices: Array<FormattingSettingsSlice> = [this.layoutMode, this.uniformYAxis, this.rows, this.columns, this.sortBy, this.sortDirection];
 }
 
+
+
 /**
 * Visual Formatting Settings Model Class
 */
 export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     layoutSettings = new LayoutSettingsCard();
+    localizationSettings = new LocalizationSettingsCard();
     columnSettings = new ColumnSettingsCard();
     sentimentColors = new SentimentColorsCard();
     totalSettings = new TotalSettingsCard();
@@ -597,9 +603,11 @@ export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     xAxisSettings = new XAxisSettingsCard();
     sortingSettings = new SortingSettingsCard();
     rankingSettings = new RankingSettingsCard();
+    smallMultiplesSettings = new SmallMultiplesSettingsCard();
 
     cards = [
         this.layoutSettings,
+        this.localizationSettings,
         this.columnSettings,
         this.sentimentColors,
         this.totalSettings,
@@ -607,6 +615,7 @@ export class VisualFormattingSettingsModel extends FormattingSettingsModel {
         this.yAxisSettings,
         this.xAxisSettings,
         this.sortingSettings,
-        this.rankingSettings
+        this.rankingSettings,
+        this.smallMultiplesSettings
     ];
 }
