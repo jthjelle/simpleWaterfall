@@ -589,7 +589,6 @@ class SmallMultiplesSettingsCard extends FormattingSettingsCard {
 */
 export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     layoutSettings = new LayoutSettingsCard();
-    localizationSettings = new LocalizationSettingsCard();
     columnSettings = new ColumnSettingsCard();
     sentimentColors = new SentimentColorsCard();
     totalSettings = new TotalSettingsCard();
@@ -598,11 +597,9 @@ export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     xAxisSettings = new XAxisSettingsCard();
     sortingSettings = new SortingSettingsCard();
     rankingSettings = new RankingSettingsCard();
-    smallMultiplesSettings = new SmallMultiplesSettingsCard();
 
     cards = [
         this.layoutSettings,
-        this.localizationSettings,
         this.columnSettings,
         this.sentimentColors,
         this.totalSettings,
@@ -610,7 +607,6 @@ export class VisualFormattingSettingsModel extends FormattingSettingsModel {
         this.yAxisSettings,
         this.xAxisSettings,
         this.sortingSettings,
-        this.rankingSettings,
-        this.smallMultiplesSettings
+        this.rankingSettings
     ];
 }

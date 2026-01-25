@@ -87,29 +87,6 @@
                 }
             }
         },
-        "localizationSettings": {
-            "displayName": "Localization",
-            "properties": {
-                "pyAbbrev": {
-                    "displayName": "PY Abbreviation",
-                    "type": {
-                        "text": true
-                    }
-                },
-                "tyAbbrev": {
-                    "displayName": "TY Abbreviation",
-                    "type": {
-                        "text": true
-                    }
-                },
-                "budgetAbbrev": {
-                    "displayName": "Budget Abbreviation",
-                    "type": {
-                        "text": true
-                    }
-                }
-            }
-        },
         "columnSettings": {
             "displayName": "Column Settings",
             "properties": {
@@ -652,78 +629,6 @@
                     "displayName": "Others Label",
                     "type": {
                         "text": true
-                    }
-                }
-            }
-        },
-        "smallMultiplesSettings": {
-            "displayName": "Small Multiples",
-            "properties": {
-                "layoutMode": {
-                    "displayName": "Layout Mode",
-                    "type": {
-                        "enumeration": [
-                            {
-                                "displayName": "Auto",
-                                "value": "auto"
-                            },
-                            {
-                                "displayName": "Fixed",
-                                "value": "fixed"
-                            }
-                        ]
-                    }
-                },
-                "uniformYAxis": {
-                    "displayName": "Uniform Y-Axis",
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "rows": {
-                    "displayName": "Rows",
-                    "type": {
-                        "numeric": true
-                    }
-                },
-                "columns": {
-                    "displayName": "Columns",
-                    "type": {
-                        "numeric": true
-                    }
-                },
-                "sortBy": {
-                    "displayName": "Sort By",
-                    "type": {
-                        "enumeration": [
-                            {
-                                "displayName": "Name",
-                                "value": "name"
-                            },
-                            {
-                                "displayName": "Start Value",
-                                "value": "start"
-                            },
-                            {
-                                "displayName": "End Value",
-                                "value": "end"
-                            }
-                        ]
-                    }
-                },
-                "sortDirection": {
-                    "displayName": "Direction",
-                    "type": {
-                        "enumeration": [
-                            {
-                                "displayName": "Ascending",
-                                "value": "asc"
-                            },
-                            {
-                                "displayName": "Descending",
-                                "value": "desc"
-                            }
-                        ]
                     }
                 }
             }
