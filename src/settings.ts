@@ -178,7 +178,7 @@ class TotalSettingsCard extends FormattingSettingsCard {
     startColumnColor = new formattingSettings.ColorPicker({
         name: "startColumnColor",
         displayName: "Start Column Color",
-        value: { value: "#333333" }
+        value: { value: "#999999" }
     });
 
     showEndTotal = new formattingSettings.ToggleSwitch({
@@ -363,11 +363,22 @@ class DataLabelSettingsCard extends FormattingSettingsCard {
         value: false
     });
 
-    // Background
+    // Background (Badge)
     showBackground = new formattingSettings.ToggleSwitch({
         name: "showBackground",
         displayName: "Show Background",
         value: false
+    });
+
+    badgeShape = new formattingSettings.ItemDropdown({
+        name: "badgeShape",
+        displayName: "Badge Shape",
+        value: { value: "rounded", displayName: "Rounded" },
+        items: [
+            { value: "rounded", displayName: "Rounded" },
+            { value: "rectangle", displayName: "Rectangle" },
+            { value: "pill", displayName: "Pill" }
+        ]
     });
 
     backgroundColor = new formattingSettings.ColorPicker({
@@ -390,7 +401,7 @@ class DataLabelSettingsCard extends FormattingSettingsCard {
         this.numberScale, this.decimalPlaces, this.percentDecimalPlaces, this.useThousandsSeparator,
         this.thousandsAbbrev, this.millionsAbbrev,
         this.showRunningTotal,
-        this.showBackground, this.backgroundColor, this.backgroundTransparency
+        this.showBackground, this.badgeShape, this.backgroundColor, this.backgroundTransparency
     ];
 }
 

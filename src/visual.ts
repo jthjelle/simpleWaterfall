@@ -1132,6 +1132,8 @@ export class Visual implements IVisual {
             const transparency = this.settings.dataLabelSettings.backgroundTransparency.value;
             const opacity = (100 - transparency) / 100;
 
+            const badgeShape = this.settings.dataLabelSettings.badgeShape.value.value;
+
             // Remove old text-only labels logic to avoid duplicates if switching modes
             contentGroup.selectAll("text.label").remove();
 
@@ -1139,7 +1141,7 @@ export class Visual implements IVisual {
                 .data(viewModel.dataPoints.filter(d => !d.isSpacer));
 
             const labelsEnter = labels.enter().append("g").classed("label-group", true);
-            labelsEnter.append("rect").classed("label-bg", true).attr("rx", 3).attr("ry", 3);
+            labelsEnter.append("rect").classed("label-bg", true);
             labelsEnter.append("text").classed("label-text", true);
 
             const labelsMerge = labels.merge(labelsEnter);
@@ -1211,11 +1213,21 @@ export class Visual implements IVisual {
                 const node = textEl.node() as SVGTextElement;
                 if (node && showBackground) {
                     const bbox = node.getBBox();
+                    const paddingX = 4;
+                    const paddingY = 2;
+                    const rectH = bbox.height + paddingY * 2;
+
+                    let rx = 0;
+                    if (badgeShape === "rounded") rx = 3;
+                    else if (badgeShape === "pill") rx = rectH / 2;
+
                     rectEl.style("display", null)
-                        .attr("x", bbox.x - 4)
-                        .attr("y", bbox.y - 2)
-                        .attr("width", bbox.width + 8)
-                        .attr("height", bbox.height + 4)
+                        .attr("x", bbox.x - paddingX)
+                        .attr("y", bbox.y - paddingY)
+                        .attr("width", bbox.width + paddingX * 2)
+                        .attr("height", rectH)
+                        .attr("rx", rx)
+                        .attr("ry", rx) // Standard SVG: ry defaults to rx if omitted, but explicit is safe
                         .attr("fill", backgroundColor)
                         .attr("opacity", opacity);
                 } else {
