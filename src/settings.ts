@@ -218,7 +218,7 @@ class TotalSettingsCard extends FormattingSettingsCard {
     referenceColumn = new formattingSettings.ItemDropdown({
         name: "referenceColumn",
         displayName: "Reference Column",
-        value: { value: "none", displayName: "None" },
+        value: { value: "budget", displayName: "Budget" },
         items: [
             { value: "none", displayName: "None" },
             { value: "py", displayName: "Previous Year (PY)" },
