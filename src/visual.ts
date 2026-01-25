@@ -147,8 +147,8 @@ export class Visual implements IVisual {
             return;
         }
 
-        this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, options.dataViews[0]);
-        this.settings = this.formattingSettings;
+        this.settings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, options.dataViews[0]);
+
 
         // Detect high contrast mode (cast to any for compatibility)
         this.isHighContrast = (this.colorPalette as any).isHighContrast || false;
