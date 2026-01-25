@@ -172,8 +172,8 @@ export class Visual implements IVisual {
         this.svg.attr("width", width).attr("height", height);
 
         // Small Multiples Layout
-        const smSettings = this.settings.smallMultiplesSettings;
-        const isAuto = smSettings.layoutMode.value.value === "auto";
+        // const smSettings = this.settings.smallMultiplesSettings;
+        const isAuto = true; // smSettings.layoutMode.value.value === "auto";
         const numCharts = viewModel.charts.length;
 
         let rows = 1;
@@ -185,11 +185,11 @@ export class Visual implements IVisual {
                 rows = Math.ceil(numCharts / cols);
             }
         } else {
-            rows = Math.max(1, smSettings.rows.value);
-            cols = Math.max(1, smSettings.columns.value);
+            rows = 2; // Math.max(1, smSettings.rows.value);
+            cols = 2; // Math.max(1, smSettings.columns.value);
         }
 
-        const uniformYAxis = smSettings.uniformYAxis.value;
+        const uniformYAxis = false; // smSettings.uniformYAxis.value;
         const globalMinMax = uniformYAxis ? { min: viewModel.globalMinValue, max: viewModel.globalMaxValue } : null;
 
         const gap = 15;
@@ -338,8 +338,8 @@ export class Visual implements IVisual {
         }
 
         // Small Multiples Sorting
-        const smSortBy = this.settings.smallMultiplesSettings.sortBy.value.value;
-        const smSortDesc = this.settings.smallMultiplesSettings.sortDirection.value.value === "desc";
+        const smSortBy = "name"; // this.settings.smallMultiplesSettings.sortBy.value.value;
+        const smSortDesc = false; // this.settings.smallMultiplesSettings.sortDirection.value.value === "desc";
 
         if (charts.length > 1) {
             charts.sort((a, b) => {
@@ -1709,9 +1709,10 @@ export class Visual implements IVisual {
         const sortDesc = this.settings.sortingSettings.sortDirection.value.value === "desc";
 
         // Abbrev Replacements
-        const pyAbbrev = this.settings.localizationSettings.pyAbbrev.value || "PY";
-        const tyAbbrev = this.settings.localizationSettings.tyAbbrev.value || "TY";
-        const budgetAbbrev = this.settings.localizationSettings.budgetAbbrev.value || "BUD";
+        // Abbrev Replacements
+        const pyAbbrev = "PY"; // this.settings.localizationSettings.pyAbbrev.value || "PY";
+        const tyAbbrev = "TY"; // this.settings.localizationSettings.tyAbbrev.value || "TY";
+        const budgetAbbrev = "BUD"; // this.settings.localizationSettings.budgetAbbrev.value || "BUD";
 
         const replaceAbbrev = (name: string, type: string) => {
             // If name is user-provided constant "Start" or "End", we might want to override it IF the user hasn't customized it?
