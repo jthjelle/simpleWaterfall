@@ -89,6 +89,8 @@ export class Visual implements IVisual {
         // Initialize color palette for high contrast detection
         this.colorPalette = this.host.colorPalette;
 
+        this.settings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, null);
+
         this.svg = d3.select(this.target)
             .append("svg")
             .classed("waterfall-visual", true);
@@ -1981,6 +1983,6 @@ export class Visual implements IVisual {
     }
 
     public getFormattingModel(): powerbi.visuals.FormattingModel {
-        return this.formattingSettingsService.buildFormattingModel(this.formattingSettings);
+        return this.formattingSettingsService.buildFormattingModel(this.settings);
     }
 }
