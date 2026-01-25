@@ -118,12 +118,19 @@ class ColumnSettingsCard extends FormattingSettingsCard {
         value: false
     });
 
+    showRefMarkOnColumns = new formattingSettings.ToggleSwitch({
+        name: "showRefMarkOnColumns",
+        displayName: "Show reference marks on columns",
+        value: false
+    });
+
     name: string = "columnSettings";
     displayName: string = "Column Settings";
     slices: Array<FormattingSettingsSlice> = [
         this.showPY, this.pyColumnColor, this.showPYLabel,
         this.showTY, this.tyColumnColor, this.showTYLabel,
-        this.flipOverlap
+        this.flipOverlap,
+        this.showRefMarkOnColumns
     ];
 }
 
@@ -229,11 +236,7 @@ class TotalSettingsCard extends FormattingSettingsCard {
         ]
     });
 
-    showRefMarkOnColumns = new formattingSettings.ToggleSwitch({
-        name: "showRefMarkOnColumns",
-        displayName: "Show Mark on Columns",
-        value: false
-    });
+
 
     showVariance = new formattingSettings.ToggleSwitch({
         name: "showVariance",
@@ -265,7 +268,7 @@ class TotalSettingsCard extends FormattingSettingsCard {
         this.showStartTotal, this.startTotalColumn, this.startColumnColor,
         this.showEndTotal, this.endTotalColumn, this.endColumnColor,
         this.totalColor,
-        this.referenceColumn, this.refMarkShape, this.showRefMarkOnColumns,
+        this.referenceColumn, this.refMarkShape,
         this.showVariance,
         this.showSummaryIndicator, this.summaryPositiveColor, this.summaryNegativeColor
     ];

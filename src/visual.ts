@@ -1462,7 +1462,7 @@ export class Visual implements IVisual {
 
         const refStrokeColor = "#333";
         const refMarkShape = this.settings.totalSettings.refMarkShape.value.value;
-        const showRefMarkOnColumns = this.settings.totalSettings.showRefMarkOnColumns.value;
+        const showRefMarkOnColumns = this.settings.columnSettings.showRefMarkOnColumns.value;
 
         // Find End Point with Reference Value (Needed for Variance Indicator)
         const refPoint = viewModel.dataPoints.find(d => d.isTotal && d.referenceValue !== undefined);
