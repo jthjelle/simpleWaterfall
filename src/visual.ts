@@ -2609,7 +2609,7 @@ export class Visual implements IVisual {
                 }
             }
         }
-        console.log("[Totals] Start Total:", startTotalValue, "from column:", startTotalColumn);
+
 
         const singleMeasureMode = this.settings.totalSettings.singleMeasureMode.value;
         const hasOnlyCy = cyValues && cyValues.length > 0 && (!pyValues || pyValues.length === 0) && (!budgetValues || budgetValues.length === 0);
@@ -2724,7 +2724,7 @@ export class Visual implements IVisual {
                         totalRef += Number(refSourceArray[i] || 0);
                     }
                 }
-                console.log("[RefMark] Total Reference Calculated:", totalRef, "from", useFilteredIndices ? indices.length : refSourceArray.length, "rows");
+
             }
 
             dataPoints.push({
@@ -2853,7 +2853,7 @@ export class Visual implements IVisual {
         return this.formattingSettingsService.buildFormattingModel(this.settings);
     }
 
-                            private async checkLicensing(): Promise<boolean> {
+                                private async checkLicensing(): Promise<boolean> {
         // 1. Desktop Check (Free)
         if (this.host.hostEnv === powerbi.common.CustomVisualHostEnv.Desktop) {
             return true;
