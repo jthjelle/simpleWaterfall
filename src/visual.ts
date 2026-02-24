@@ -173,17 +173,22 @@ export class Visual implements IVisual {
 
     public update(options: VisualUpdateOptions) {
         this.currentOptions = options; // Save options for re-render
-        // Always render the visual first
-        this.runUpdate(options);
 
-        // Then Check License (Async)
-        this.checkLicensing().then((isAllowed) => {
-            if (!isAllowed) {
-                this.renderOverlay(true);
-            } else {
-                this.renderOverlay(false);
-            }
-        });
+        try {
+            // Always render the visual first
+            this.runUpdate(options);
+
+            // Then Check License (Async)
+            this.checkLicensing().then((isAllowed) => {
+                if (!isAllowed) {
+                    this.renderOverlay(true);
+                } else {
+                    this.renderOverlay(false);
+                }
+            });
+        } catch (error) {
+            this.events.renderingFailed(options);
+        }
     }
 
     private runUpdate(options: VisualUpdateOptions) {
@@ -2853,7 +2858,7 @@ export class Visual implements IVisual {
         return this.formattingSettingsService.buildFormattingModel(this.settings);
     }
 
-                                private async checkLicensing(): Promise<boolean> {
+                private async checkLicensing(): Promise<boolean> {
         // 1. Desktop Check (Free)
         if (this.host.hostEnv === powerbi.common.CustomVisualHostEnv.Desktop) {
             return true;
