@@ -1,23 +1,26 @@
 {
   "name": "visual",
-  "description": "default_template_value",
-  "version": "1.4.2.7",
+  "description": "Simple Waterfall Chart for Operations",
+  "version": "1.4.2.146",
   "repository": {
-    "type": "default_template_value",
-    "url": "default_template_value"
+    "type": "git",
+    "url": "https://github.com/jthjelle/bildebehandling"
   },
   "license": "MIT",
   "scripts": {
     "pbiviz": "pbiviz",
     "start": "pbiviz start",
     "package": "pbiviz package",
-    "lint": "npx eslint ."
+    "lint": "npx eslint . --ext .js,.jsx,.ts,.tsx",
+    "eslint": "npx eslint . --ext .js,.jsx,.ts,.tsx",
+    "build:all": "node build-both.js"
   },
   "dependencies": {
     "@types/d3": "^7.4.3",
     "d3": "^7.9.0",
-    "powerbi-visuals-api": "~5.3.0",
-    "powerbi-visuals-utils-formattingmodel": "^6.0.4"
+    "powerbi-visuals-api": "~5.10.0",
+    "powerbi-visuals-utils-formattingmodel": "^6.0.4",
+    "powerbi-visuals-utils-formattingutils": "^6.1.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.8.0",

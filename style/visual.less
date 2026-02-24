@@ -1,9 +1,78 @@
 p {
     font-size: 20px;
     font-weight: bold;
+
     em {
         background: yellow;
         padding: 5px;
-        
+
+    }
+}
+
+// License Overlay
+.license-overlay {
+    display: none; // Hidden by default
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    font-family: "Segoe UI", wf_segoe-ui_normal, helvetica, arial, sans-serif;
+    color: #333;
+
+    p {
+        font-size: 18px;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 14px;
+        cursor: pointer;
+        background-color: #0078d4;
+        color: white;
+        border: none;
+        border-radius: 2px;
+
+        &:hover {
+            background-color: #106ebe;
+        }
+    }
+}
+
+// Interaction Fix: Allow Dragging via CSS pass-through
+svg.waterfall-visual {
+    pointer-events: none;
+    user-select: none;
+
+    // Elements that MUST be clickable:
+    .bar {
+        pointer-events: all;
+        cursor: pointer;
+    }
+
+    // Restore interactivity for Axis Labels (Cross-filtering)
+    .x-axis .tick text,
+    .y-axis .tick text {
+        pointer-events: all;
+        cursor: pointer;
+    }
+
+    // Fix Empty State Drag: Ensure message text doesn't block events
+    .message-text {
+        pointer-events: none;
+        user-select: none;
+    }
+
+    // Connectors shouldn't block
+    .connector {
+        pointer-events: none;
     }
 }
