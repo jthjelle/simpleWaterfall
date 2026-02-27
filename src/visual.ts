@@ -36,7 +36,7 @@ interface WaterfallDataPoint {
     runningTotal: number;
     color: string;
     isTotal: boolean;
-    selectionId: powerbi.visuals.ISelectionId;
+    selectionId: powerbi.visuals.ISelectionId | null;
     tooltipValues?: { displayName: string, value: string }[];
     isReference?: boolean;
     varianceRef?: number; // Value to compare against (End Total)
@@ -45,7 +45,9 @@ interface WaterfallDataPoint {
     originalIndex?: number;
     referenceValue?: number; // Value for Reference Mark
     referenceY?: number; // Calculated Chart Coordinate for Reference Mark
-    groupName?: string; // Name of the parent category
+    groupName?: string | null; // Name of the parent category
+    isMainTotal?: boolean; // Main total override
+    colorOverride?: string; // Color override
     isGroupStart?: boolean; // Is this the first item in the group?
     isGroupEnd?: boolean; // Is this the last item in the group?
     isSingletGroup?: boolean; // If true, this group has only 1 item
@@ -2858,7 +2860,7 @@ export class Visual implements IVisual {
         return this.formattingSettingsService.buildFormattingModel(this.settings);
     }
 
-                private async checkLicensing(): Promise<boolean> {
+    private async checkLicensing(): Promise<boolean> {
         // 1. Desktop Check (Free)
         if (this.host.hostEnv === powerbi.common.CustomVisualHostEnv.Desktop) {
             return true;
@@ -2870,23 +2872,21 @@ export class Visual implements IVisual {
             if (!licenseInfo || !licenseInfo.plans) {
                 return false;
             }
-            
+
             // Check for any active plan
             const hasActivePlan = licenseInfo.plans.some(plan =>
                 plan.state === powerbi.ServicePlanState.Active ||
                 plan.state === powerbi.ServicePlanState.Warning
             );
             return hasActivePlan;
-            
+
         } catch (err) {
             console.error('License check failed', err);
             return false;
         }
     }
 
-    private debugBoundCount: number = 0;
-    private debugBoundNames: string = "";
-    private debugLoadedCount: number = 0;
+    // Debug variables removed
 
     private checkDrillAvailability(dataView: powerbi.DataView): boolean {
         if (!dataView || !dataView.metadata || !dataView.categorical || !dataView.categorical.categories) return false;
@@ -2896,10 +2896,6 @@ export class Visual implements IVisual {
         const boundColumns = dataView.metadata.columns.filter(c => c.roles && c.roles[categoryRoleName]);
         // Find loaded levels
         const loadedLevels = dataView.categorical.categories.filter(c => c.source.roles && c.source.roles[categoryRoleName]).length;
-
-        this.debugBoundCount = boundColumns.length;
-        this.debugBoundNames = boundColumns.map(c => c.displayName).join(", ");
-        this.debugLoadedCount = loadedLevels;
 
         // If defined structure > loaded structure, drill down is possible
         return boundColumns.length > loadedLevels;
