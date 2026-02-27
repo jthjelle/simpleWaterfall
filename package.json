@@ -4,7 +4,7 @@
   "version": "1.4.2.146",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jthjelle/bildebehandling"
+    "url": "https://github.com/jthjelle/simpleWaterfall"
   },
   "license": "MIT",
   "scripts": {
