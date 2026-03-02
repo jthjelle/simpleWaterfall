@@ -175,6 +175,8 @@ export class Visual implements IVisual {
 
     public update(options: VisualUpdateOptions) {
         this.currentOptions = options; // Save options for re-render
+        // Signal rendering started
+        this.events.renderingStarted(options);
 
         try {
             // Always render the visual first
@@ -187,6 +189,9 @@ export class Visual implements IVisual {
                 } else {
                     this.renderOverlay(false);
                 }
+                this.events.renderingFinished(options);
+            }).catch(() => {
+                this.events.renderingFailed(options);
             });
         } catch (error) {
             this.events.renderingFailed(options);
@@ -194,8 +199,6 @@ export class Visual implements IVisual {
     }
 
     private runUpdate(options: VisualUpdateOptions) {
-        // Signal rendering started
-        this.events.renderingStarted(options);
 
         // Landing Page Logic (Zero State)
         if (!options.dataViews || !options.dataViews[0] || !options.dataViews[0].categorical || !options.dataViews[0].categorical.categories || !options.dataViews[0].categorical.values) {
@@ -208,7 +211,7 @@ export class Visual implements IVisual {
                 .style("font-size", "20px")
                 .style("fill", "#666")
                 .text("Please add data fields");
-            this.events.renderingFinished(options);
+
             return;
         }
 
@@ -230,7 +233,7 @@ export class Visual implements IVisual {
                 .style("font-size", "14px")
                 .style("fill", "red")
                 .text("Start Column and End Column can't be the same value");
-            this.events.renderingFinished(options);
+
             return;
         }
 
@@ -322,9 +325,6 @@ export class Visual implements IVisual {
                 this.host.displayWarningIcon("Rendering Error", "An error occurred while rendering the visual. Please check your data.");
             }
         });
-
-        // Signal rendering finished
-        this.events.renderingFinished(options);
     }
 
     private formatNumber(value: number, decimalPlaces: number, useThousandsSeparator: boolean, numberScale?: string, thousandsAbbrev?: string, millionsAbbrev?: string): string {
