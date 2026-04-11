@@ -97,7 +97,7 @@ export class Visual implements IVisual {
     private events: IVisualEventService;
     private isHighContrast: boolean = false;
     private colorPalette: IColorPalette;
-    private licenseOverlay: d3.Selection<HTMLDivElement, any, any, any>;
+    private validationErrorMessage: string | null = null;
 
     constructor(options: VisualConstructorOptions) {
         this.host = options.host;
@@ -117,21 +117,9 @@ export class Visual implements IVisual {
         this.svg = d3.select(this.target)
             .append("svg")
             .classed("waterfall-visual", true);
-
-
-
         this.mainGroup = this.svg.append('g').classed('mainGroup', true);
         this.xAxisGroup = this.mainGroup.append('g').classed('xAxis', true);
         this.yAxisGroup = this.mainGroup.append('g').classed('yAxis', true);
-
-        // Add Overlay Container
-        this.licenseOverlay = d3.select(options.element)
-            .append('div')
-            .classed('license-overlay', true);
-
-        this.licenseOverlay.append('p').text("This visual requires a license to view in Power BI Service.");
-
-
 
         // Define gradients/masks
         const defs = this.svg.append("defs");
@@ -173,44 +161,175 @@ export class Visual implements IVisual {
         });
     }
 
+    private renderCenteredMessage(options: VisualUpdateOptions, message: string, color: string = "#666") {
+        this.mainGroup.selectAll("*").remove();
+        this.mainGroup.append("text")
+            .classed("message-text", true)
+            .attr("x", options.viewport.width / 2)
+            .attr("y", options.viewport.height / 2)
+            .attr("text-anchor", "middle")
+            .style("font-size", "14px")
+            .style("fill", color)
+            .text(message);
+    }
+
+    private getInvalidMeasureRole(dataView: powerbi.DataView): string | null {
+        const values = dataView?.categorical?.values;
+        if (!values) return null;
+
+        const measureLabels: Record<string, string> = {
+            cy: "Current Year (CY)",
+            py: "Previous Year (PY)",
+            budget: "Budget"
+        };
+
+        const hasInvalidValue = (input: any): boolean => {
+            if (input === null || input === undefined || input === "") return false;
+            if (typeof input === "number") return !Number.isFinite(input);
+            if (typeof input === "string") {
+                const trimmed = input.trim();
+                if (trimmed === "") return false;
+                return !Number.isFinite(Number(trimmed));
+            }
+
+            return true;
+        };
+
+        for (const column of values) {
+            for (const roleName of Object.keys(measureLabels)) {
+                if (!column.source?.roles?.[roleName]) continue;
+
+                if (column.values?.some(hasInvalidValue) || column.highlights?.some(hasInvalidValue)) {
+                    return measureLabels[roleName];
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private getInvalidMeasureMetadataRole(dataView: powerbi.DataView): string | null {
+        const columns = dataView?.metadata?.columns;
+        if (!columns) return null;
+
+        const measureLabels: Record<string, string> = {
+            cy: "Current Year (CY)",
+            py: "Previous Year (PY)",
+            budget: "Budget"
+        };
+
+        for (const column of columns) {
+            for (const [roleName, label] of Object.entries(measureLabels)) {
+                if (!column.roles?.[roleName]) continue;
+
+                const type = column.type as any;
+                const isNumeric =
+                    type?.numeric === true ||
+                    type?.integer === true;
+
+                if (!isNumeric) {
+                    return label;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private isBlankMeasureValue(value: any): boolean {
+        return value === null || value === undefined || value === "";
+    }
+
+    private isValidMeasureValue(value: any): boolean {
+        if (this.isBlankMeasureValue(value)) return true;
+        if (typeof value === "number") return Number.isFinite(value);
+        if (typeof value === "string") {
+            const trimmed = value.trim();
+            if (trimmed === "") return true;
+            return Number.isFinite(Number(trimmed));
+        }
+
+        return false;
+    }
+
+    private validateMeasureSeries(values: any[] | null, highlights: any[] | null, label: string): string | null {
+        const seriesToCheck = [
+            { entries: values, suffix: "" },
+            { entries: highlights, suffix: " highlight" }
+        ];
+
+        for (const series of seriesToCheck) {
+            if (!series.entries) continue;
+
+            for (let i = 0; i < series.entries.length; i++) {
+                const value = series.entries[i];
+                if (this.isValidMeasureValue(value)) continue;
+                return `${label} contains non-numeric values. Please use a numeric field.`;
+            }
+        }
+
+        return null;
+    }
+
+    private parseMeasureValue(value: any, label: string): number {
+        if (this.isBlankMeasureValue(value)) return 0;
+        if (typeof value === "number") return Number.isFinite(value) ? value : this.failMeasureValidation(label);
+        if (typeof value === "string") {
+            const trimmed = value.trim();
+            if (trimmed === "") return 0;
+
+            const parsed = Number(trimmed);
+            return Number.isFinite(parsed) ? parsed : this.failMeasureValidation(label);
+        }
+
+        return this.failMeasureValidation(label);
+    }
+
+    private failMeasureValidation(label: string): number {
+        this.validationErrorMessage = `${label} contains non-numeric values. Please use a numeric field.`;
+        return NaN;
+    }
+
+    private hasInvalidChartData(viewModel: WaterfallViewModel): boolean {
+        const isFiniteNumber = (value: number | undefined): boolean =>
+            value === undefined || Number.isFinite(value);
+
+        return viewModel.charts.some(chart =>
+            !Number.isFinite(chart.maxValue) ||
+            !Number.isFinite(chart.minValue) ||
+            !Number.isFinite(chart.pyTotal) ||
+            chart.dataPoints.some(d =>
+                !Number.isFinite(d.delta) ||
+                !Number.isFinite(d.start) ||
+                !Number.isFinite(d.end) ||
+                !Number.isFinite(d.py) ||
+                !Number.isFinite(d.cy) ||
+                !Number.isFinite(d.runningTotal) ||
+                !isFiniteNumber(d.referenceValue) ||
+                !isFiniteNumber(d.referenceY)
+            )
+        );
+    }
+
     public update(options: VisualUpdateOptions) {
         this.currentOptions = options; // Save options for re-render
         // Signal rendering started
         this.events.renderingStarted(options);
 
         try {
-            // Always render the visual first
             this.runUpdate(options);
-
-            // Then Check License (Async)
-            this.checkLicensing().then((isAllowed) => {
-                if (!isAllowed) {
-                    this.renderOverlay(true);
-                } else {
-                    this.renderOverlay(false);
-                }
-                this.events.renderingFinished(options);
-            }).catch(() => {
-                this.events.renderingFailed(options);
-            });
+            this.events.renderingFinished(options);
         } catch (error) {
             this.events.renderingFailed(options);
         }
     }
 
     private runUpdate(options: VisualUpdateOptions) {
+        this.validationErrorMessage = null;
 
         // Landing Page Logic (Zero State)
         if (!options.dataViews || !options.dataViews[0] || !options.dataViews[0].categorical || !options.dataViews[0].categorical.categories || !options.dataViews[0].categorical.values) {
-            this.mainGroup.selectAll("*").remove();
-            this.mainGroup.append("text")
-                .classed("message-text", true)
-                .attr("x", options.viewport.width / 2)
-                .attr("y", options.viewport.height / 2)
-                .attr("text-anchor", "middle")
-                .style("font-size", "20px")
-                .style("fill", "#666")
-                .text("Please add data fields");
+            this.renderCenteredMessage(options, "Please add data fields");
 
             return;
         }
@@ -225,15 +344,23 @@ export class Visual implements IVisual {
         if (!endCol || endCol === "auto" || endCol === "none") endCol = "cy";
 
         if (startCol === endCol) {
-            this.mainGroup.selectAll("*").remove();
-            this.mainGroup.append("text")
-                .attr("x", options.viewport.width / 2)
-                .attr("y", options.viewport.height / 2)
-                .attr("text-anchor", "middle")
-                .style("font-size", "14px")
-                .style("fill", "red")
-                .text("Start Column and End Column can't be the same value");
+            this.renderCenteredMessage(options, "Start Column and End Column can't be the same value", "red");
+            this.host.displayWarningIcon("Invalid configuration", "Start Column and End Column can't be the same value");
+            return;
+        }
 
+        const invalidMeasureMetadataRole = this.getInvalidMeasureMetadataRole(options.dataViews[0]);
+        if (invalidMeasureMetadataRole) {
+            const message = `${invalidMeasureMetadataRole} must be a numeric field.`;
+            this.renderCenteredMessage(options, message, "red");
+            this.host.displayWarningIcon("Invalid data", message);
+            return;
+        }
+
+        const invalidMeasureRole = this.getInvalidMeasureRole(options.dataViews[0]);
+        if (invalidMeasureRole) {
+            this.renderCenteredMessage(options, `${invalidMeasureRole} contains non-numeric values. Please use a numeric field.`, "red");
+            this.host.displayWarningIcon("Invalid data", `${invalidMeasureRole} contains non-numeric values. Please use a numeric field.`);
             return;
         }
 
@@ -245,6 +372,17 @@ export class Visual implements IVisual {
         this.mainGroup.selectAll("*").remove();
 
         const viewModel = this.transformData(options);
+        if (this.validationErrorMessage) {
+            this.renderCenteredMessage(options, this.validationErrorMessage, "red");
+            this.host.displayWarningIcon("Invalid data", this.validationErrorMessage);
+            return;
+        }
+
+        if (this.hasInvalidChartData(viewModel)) {
+            this.renderCenteredMessage(options, "Current Year (CY), Previous Year (PY), and Budget must be numeric fields.", "red");
+            this.host.displayWarningIcon("Invalid data", "Current Year (CY), Previous Year (PY), and Budget must be numeric fields.");
+            return;
+        }
 
         if (!viewModel || viewModel.charts.length === 0) {
             this.host.displayWarningIcon("Data Requirement", "Please drag fields into Category, PY, and TY to visualize data.");
@@ -445,6 +583,16 @@ export class Visual implements IVisual {
                 }
                 if (v.source.roles["tooltips"]) tooltipCols.push({ source: v.source, values: v.values });
             });
+        }
+
+        const measureValidationMessage =
+            this.validateMeasureSeries(pyValues, pyHighlights, "Previous Year (PY)") ||
+            this.validateMeasureSeries(cyValues, cyHighlights, "Current Year (CY)") ||
+            this.validateMeasureSeries(budgetValues, budgetHighlights, "Budget");
+
+        if (measureValidationMessage) {
+            this.validationErrorMessage = measureValidationMessage;
+            return { charts: [], globalMaxValue: 0, globalMinValue: 0 };
         }
 
         const charts: WaterfallChartData[] = [];
@@ -2053,14 +2201,21 @@ export class Visual implements IVisual {
         const othersLabel = this.settings.rankingSettings.othersLabel.value;
 
         // Helper to get value (prioritize highlights)
+        const getSeriesLabel = (source: any[]): string => {
+            if (source === pyValues || source === pyHighlights) return "Previous Year (PY)";
+            if (source === cyValues || source === cyHighlights) return "Current Year (CY)";
+            if (source === budgetValues || source === budgetHighlights) return "Budget";
+            return "Measure";
+        };
+
         const getValue = (source: any[], highlights: any[], idx: number) => {
             if (highlights) {
                 // If highlights array exists, we are in highlighting/cross-filtering mode
                 // If the specific index is null, it means it's not highlighted -> return 0
-                return highlights[idx] !== null ? Number(highlights[idx]) : 0;
+                return highlights[idx] !== null ? this.parseMeasureValue(highlights[idx], getSeriesLabel(highlights)) : 0;
             }
             if (!source || source.length === 0) return 0;
-            return Number(source[idx] || 0);
+            return this.parseMeasureValue(source[idx], getSeriesLabel(source));
         };
         // ... (intermediate code skipped by tool - need to be careful with range)
         // Actually, I can't skip code in ReplaceFileContent unless I use separate chunks.
@@ -2860,33 +3015,9 @@ export class Visual implements IVisual {
         return this.formattingSettingsService.buildFormattingModel(this.settings);
     }
 
-    private async checkLicensing(): Promise<boolean> {
-        // 1. Desktop Check (Free)
-        if (this.host.hostEnv === powerbi.common.CustomVisualHostEnv.Desktop) {
-            return true;
-        }
-
-        // 2. Service Check (AppSource)
-        try {
-            const licenseInfo = await this.host.licenseManager.getAvailableServicePlans();
-            if (!licenseInfo || !licenseInfo.plans) {
-                return false;
-            }
-
-            // Check for any active plan
-            const hasActivePlan = licenseInfo.plans.some(plan =>
-                plan.state === powerbi.ServicePlanState.Active ||
-                plan.state === powerbi.ServicePlanState.Warning
-            );
-            return hasActivePlan;
-
-        } catch (err) {
-            console.error('License check failed', err);
-            return false;
-        }
-    }
-
-    // Debug variables removed
+    private debugBoundCount: number = 0;
+    private debugBoundNames: string = "";
+    private debugLoadedCount: number = 0;
 
     private checkDrillAvailability(dataView: powerbi.DataView): boolean {
         if (!dataView || !dataView.metadata || !dataView.categorical || !dataView.categorical.categories) return false;
@@ -2899,13 +3030,5 @@ export class Visual implements IVisual {
 
         // If defined structure > loaded structure, drill down is possible
         return boundColumns.length > loadedLevels;
-    }
-    private renderOverlay(show: boolean) {
-        if (show) {
-            this.licenseOverlay.style("display", "flex");
-            // Do not hide SVG, just show overlay on top
-        } else {
-            this.licenseOverlay.style("display", "none");
-        }
     }
 }
