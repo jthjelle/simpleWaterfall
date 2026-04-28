@@ -952,19 +952,7 @@
     "supportsMultiVisualSelection": true,
     "supportsKeyboardFocus": true,
     "supportsLandingPage": true,
-    "privileges": [
-        {
-            "name": "AADAuthentication",
-            "essential": true,
-            "parameters": {
-                "COM": "https://analysis.windows.net/powerbi/api"
-            }
-        },
-        {
-            "name": "ExportContent",
-            "essential": true
-        }
-    ],
+    "privileges": [],
     "sorting": {
         "default": {}
     }
