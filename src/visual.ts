@@ -2419,9 +2419,6 @@ export class Visual implements IVisual {
             });
         }
 
-        // Debug Log for Metadata
-        console.log("Visual Update: Metadata Check", this.host, categoryColumns);
-
         // Track current group for "Others" parent handling
         let inOthersParentGroup = false;
 
