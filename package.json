@@ -1,7 +1,7 @@
 {
   "name": "visual",
   "description": "Simple Waterfall Chart for Operations",
-  "version": "1.4.2.160",
+  "version": "1.4.2.200",
   "repository": {
     "type": "git",
     "url": "https://github.com/jthjelle/bildebehandling"
