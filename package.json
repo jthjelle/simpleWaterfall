@@ -1,7 +1,7 @@
 {
   "name": "visual",
   "description": "Simple Waterfall Chart for Operations",
-  "version": "1.4.2.158",
+  "version": "1.4.2.160",
   "repository": {
     "type": "git",
     "url": "https://github.com/jthjelle/simpleWaterfall"
